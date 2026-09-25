@@ -1,4 +1,13 @@
-import { integer, pgEnum, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  check,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 export const batchStatusEnum = pgEnum("batch_status", [
   "pending",
@@ -7,27 +16,43 @@ export const batchStatusEnum = pgEnum("batch_status", [
   "cancelled",
 ]);
 
-export const batches = pgTable("batches", {
-  id: uuid("id").primaryKey(),
+export const batches = pgTable(
+  "batches",
+  {
+    id: uuid("id").primaryKey(),
 
-  status: batchStatusEnum("status").notNull().default("pending"),
+    status: batchStatusEnum("status").notNull().default("pending"),
 
-  totalCount: integer("total_count").notNull(),
+    totalCount: integer("total_count").notNull(),
 
-  completedCount: integer("completed_count").notNull().default(0),
+    completedCount: integer("completed_count").notNull().default(0),
 
-  createdAt: timestamp("created_at", {
-    withTimezone: true,
-  })
-    .notNull()
-    .defaultNow(),
+    createdAt: timestamp("created_at", {
+      withTimezone: true,
+    })
+      .notNull()
+      .defaultNow(),
 
-  updatedAt: timestamp("updated_at", {
-    withTimezone: true,
-  })
-    .notNull()
-    .defaultNow(),
-});
+    updatedAt: timestamp("updated_at", {
+      withTimezone: true,
+    })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => ({
+    batchesTotalCountCheck: check(
+      "batches_total_count_check",
+      sql`${table.totalCount} >= 0`,
+    ),
+    batchesCompletedCountCheck: check(
+      "batches_completed_count_check",
+      sql`${table.completedCount} >= 0 AND ${table.completedCount} <= ${table.completedCount}`,
+    ),
+    batchesCreatedAtIdx: index("idx_batches_created_at").on(
+      sql`${table.createdAt} DESC`,
+    ),
+  }),
+);
 
 export type Batch = InferSelectModel<typeof batches>;
 export type NewBatch = InferInsertModel<typeof batches>;
