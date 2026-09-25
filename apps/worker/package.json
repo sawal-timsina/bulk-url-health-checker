@@ -1,5 +1,5 @@
 {
-  "name": "worker",
+  "name": "@bulk-url-checker/worker",
   "private": true,
   "type": "module",
   "scripts": {
