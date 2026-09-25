@@ -1,0 +1,23 @@
+{
+  "name": "bulk-url-health-checker",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter api dev\" \"pnpm --filter worker dev\" \"pnpm --filter web dev\"",
+    "infra:up": "podman compose up -d",
+    "infra:down": "podman compose down",
+    "infra:logs": "podman compose logs -f",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "oxlint": "^1.82.0",
+    "oxlint-tsgolint": "^7.0.2001",
+    "prettier": "^3.9.6",
+    "typescript-eslint": "^8.70.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.4"
+  },
+}
