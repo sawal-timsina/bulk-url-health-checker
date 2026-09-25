@@ -1,3 +1,4 @@
+import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
   check,
   index,
@@ -7,7 +8,6 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
 
 export const batchStatusEnum = pgEnum("batch_status", [
   "pending",

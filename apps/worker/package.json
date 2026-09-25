@@ -6,7 +6,8 @@
     "dev": "tsx watch src/worker.ts",
     "build": "tsc",
     "start": "node dist/worker.js",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint"
   },
   "dependencies": {
     "bullmq": "^6.3.8",
@@ -14,10 +15,9 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
-    "tsx": "^4.23.15",
     "dotenv": "^18.0.3",
     "dotenv-expand": "^1000.0.0",
-    "typescript": "^7.0.2"
+    "tsx": "^4.23.15"
   },
   "packageManager": "pnpm@12.0.0"
 }

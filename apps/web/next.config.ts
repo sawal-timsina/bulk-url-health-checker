@@ -7,6 +7,7 @@ loadEnvConfig(path.resolve(__dirname, "../.."));
 const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
+  transpilePackages: ["@bulk-url-checker/shared"],
 };
 
 export default nextConfig;

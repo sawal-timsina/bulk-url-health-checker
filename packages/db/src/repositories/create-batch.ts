@@ -1,6 +1,6 @@
-import { db } from "../client";
-import { batches } from "../schema/batches";
-import { urls } from "../schema/urls";
+import { db } from "../client.js";
+import { type Batch, batches } from "../schema/batches.js";
+import { urls } from "../schema/urls.js";
 
 export interface CreateBatchInput {
   batchId: string;
@@ -11,7 +11,7 @@ export interface CreateBatchInput {
 }
 
 export async function createBatchWithUrls(input: CreateBatchInput) {
-  return db.transaction(async (tx) => {
+  return db.transaction<Batch>(async (tx) => {
     const [batch] = await tx
       .insert(batches)
       .values({

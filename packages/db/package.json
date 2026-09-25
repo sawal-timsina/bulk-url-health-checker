@@ -2,14 +2,16 @@
   "name": "@bulk-url-checker/db",
   "private": true,
   "version": "1.0.0",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "type": "module",
   "scripts": {
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:check": "drizzle-kit check",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:test": "tsx src/test-db.ts",
+    "lint": "oxlint"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.3",
@@ -21,7 +23,6 @@
     "dotenv": "^18.0.3",
     "dotenv-expand": "^1000.0.0",
     "drizzle-kit": "^0.31.11",
-    "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "tsx": "^4.23.15"
   }
 }

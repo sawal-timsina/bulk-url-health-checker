@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-import { buildApp } from "./app";
+import { buildApp } from "./app.js";
 import * as process from "node:process";
 import { expand } from "dotenv-expand";
 

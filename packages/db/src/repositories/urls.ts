@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
-import { db } from "../client";
-import { type NewUrl, urls } from "../schema/urls";
+import { db } from "../client.js";
+import { type NewUrl, urls } from "../schema/urls.js";
 
 export async function createUrls(data: NewUrl[]) {
   if (data.length === 0) {

@@ -1,3 +1,3 @@
-export * from "./batch";
-export * from "./url-check";
-export * from "./api";
+export * from "./batch.js";
+export * from "./url-check.js";
+export * from "./api.js";

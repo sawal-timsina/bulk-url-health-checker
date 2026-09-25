@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
-import { db } from "../client";
-import { batches, type NewBatch } from "../schema/batches";
+import { db } from "../client.js";
+import { batches, type NewBatch } from "../schema/batches.js";
 
 export async function createBatch(data: NewBatch) {
   const [batch] = await db.insert(batches).values(data).returning();

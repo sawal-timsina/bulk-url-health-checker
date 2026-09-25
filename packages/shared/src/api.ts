@@ -1,4 +1,4 @@
-import type { BatchStatus, UrlCheckStatus } from "./index";
+import type { BatchStatus, UrlCheckStatus } from "./index.js";
 
 export interface BatchSummary {
   id: string;
@@ -37,4 +37,9 @@ export interface CreateBatchRequest {
 
 export interface CreateBatchResponse {
   batch: BatchSummary;
+}
+
+export interface ApiError {
+  error: string;
+  message: string;
 }

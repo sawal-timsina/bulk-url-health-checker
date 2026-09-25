@@ -1,23 +1,28 @@
 {
-  "name": "bulk-url-health-checker",
+  "name": "bulk-url-checker",
   "private": true,
+  "//": "#target-branch-reference: scripts.prettier",
   "scripts": {
-    "dev": "concurrently \"pnpm --filter api dev\" \"pnpm --filter worker dev\" \"pnpm --filter web dev\"",
+    "dev": "concurrently \"pnpm --filter @bulk-url-checker/api dev\" \"pnpm --filter @bulk-url-checker/worker dev\" \"pnpm --filter @bulk-url-checker/web dev\"",
+    "dev:api": "pnpm --filter @bulk-url-checker/api dev",
+    "dev:worker": "pnpm --filter @bulk-url-checker/worker dev",
+    "dev:web": "pnpm --filter @bulk-url-checker/web dev",
     "infra:up": "podman compose up -d",
     "infra:down": "podman compose down",
     "infra:logs": "podman compose logs -f",
     "build": "pnpm -r build",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "devDependencies": {
+    "@types/node": "^26.6.2",
     "concurrently": "^9.0.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.6",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.4",
-    "oxlint": "^1.82.0",
-    "oxlint-tsgolint": "^7.0.2001",
-    "prettier": "^3.9.6",
-    "typescript-eslint": "^8.70.0"
+    "oxlint": "^1.85.0",
+    "oxlint-tsgolint": "^7.0.2003",
+    "prettier": "^3.9.9",
+    "typescript": "^6.0.3"
   }
 }

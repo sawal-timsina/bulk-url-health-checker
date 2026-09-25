@@ -1,7 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 
-import { healthRoutes } from "./routes/health";
+import { healthRoutes } from "./routes/health.js";
 
 export function buildApp() {
   const app = Fastify({

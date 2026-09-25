@@ -1,3 +1,4 @@
+import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
   check,
   index,
@@ -9,9 +10,8 @@ import {
   unique,
   uuid,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
 
-import { batches } from "./batches";
+import { batches } from "./batches.js";
 
 export const urlStatusEnum = pgEnum("url_status", [
   "queued",

@@ -1,9 +1,8 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "unicorn"],
-  "jsPlugins": ["eslint-plugin-prettier"],
+  "plugins": ["typescript", "unicorn", "react", "node", "eslint"],
   "categories": {
-    "correctness": "off"
+    "correctness": "warn"
   },
   "options": {
     "typeAware": true
@@ -17,7 +16,10 @@
     "eslint.config.mjs",
     "node_modules",
     "dist",
+    "dist/**",
+    "node_modules/**",
     ".next",
+    ".next/**",
     "coverage",
     ".turbo"
   ],
