@@ -79,3 +79,6 @@ export const urls = pgTable(
     ),
   }),
 );
+
+export type Url = InferSelectModel<typeof urls>;
+export type NewUrl = InferInsertModel<typeof urls>;

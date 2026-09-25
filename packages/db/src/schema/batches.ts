@@ -28,3 +28,6 @@ export const batches = pgTable("batches", {
     .notNull()
     .defaultNow(),
 });
+
+export type Batch = InferSelectModel<typeof batches>;
+export type NewBatch = InferInsertModel<typeof batches>;
