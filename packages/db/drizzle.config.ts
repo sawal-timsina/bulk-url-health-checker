@@ -1,5 +1,11 @@
-import "dotenv/config";
+import { config } from "dotenv";
+import { expand } from "dotenv-expand";
 import { defineConfig } from "drizzle-kit";
+
+const env = config({
+    path: "../../.env",
+});
+expand(env)
 
 export default defineConfig({
     schema: "./src/schema/index.ts",

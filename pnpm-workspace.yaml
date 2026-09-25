@@ -4,3 +4,5 @@ packages:
 allowBuilds:
   esbuild: false
   msgpackr-extract: false
+minimumReleaseAgeExclude:
+  - dotenv@18.0.4

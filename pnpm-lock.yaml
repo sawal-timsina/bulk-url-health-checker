@@ -24,6 +24,12 @@ importers:
       '@types/pg':
         specifier: ^8.23.1
         version: 8.23.1
+      dotenv:
+        specifier: ^18.0.3
+        version: 18.0.3
+      dotenv-expand:
+        specifier: ^1000.0.0
+        version: 1000.0.0
       tsx:
         specifier: ^4.23.15
         version: 4.23.15
@@ -33,6 +39,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@next/env':
+        specifier: ^16.3.6
+        version: 16.3.6
       next:
         specifier: 16.3.6
         version: 16.3.6(@types/node@26.6.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -58,6 +67,12 @@ importers:
       babel-plugin-react-compiler:
         specifier: 1.0.0
         version: 1.0.0
+      dotenv:
+        specifier: ^18.0.4
+        version: 18.0.4
+      dotenv-expand:
+        specifier: ^1000.0.0
+        version: 1000.0.0
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
@@ -77,6 +92,12 @@ importers:
       '@types/node':
         specifier: ^26.6.2
         version: 26.6.2
+      dotenv:
+        specifier: ^18.0.3
+        version: 18.0.3
+      dotenv-expand:
+        specifier: ^1000.0.0
+        version: 1000.0.0
       tsx:
         specifier: ^4.23.15
         version: 4.23.15
@@ -102,6 +123,9 @@ importers:
       dotenv:
         specifier: ^18.0.3
         version: 18.0.3
+      dotenv-expand:
+        specifier: ^1000.0.0
+        version: 1000.0.0
       drizzle-kit:
         specifier: ^0.31.11
         version: 0.31.11
@@ -1201,8 +1225,17 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
+  dotenv-expand@1000.0.0:
+    resolution: {integrity: sha512-3T4TtUjXm5iGKFEirqKjcDJ0EheFJbv9peb5xytC+HNu3l5Ygnu4dYE8yeqkppHMsh1If9C/A//EJu7IPtNu+A==}
+    engines: {node: '>=16'}
+
   dotenv@18.0.3:
     resolution: {integrity: sha512-/8CJTyL817qPnfbQrJgOEcrU3fDrJkRIoXBE566wHuvIXKOCHUZhPqGPbCPi9SogjdGnreF0TlvnTgK6J/8zpA==}
+    engines: {node: '>=12'}
+    hasBin: true
+
+  dotenv@18.0.4:
+    resolution: {integrity: sha512-jGt9uI5BIxpVO15kvy+iEFqNAwxYClKWnkptLjSNPnFLC003Imd0ofr3aEVsbpHdSBdSsbcApNIlz4nbyGMwdA==}
     engines: {node: '>=12'}
     hasBin: true
 
@@ -2401,7 +2434,11 @@ snapshots:
 
   detect-libc@2.1.2: {}
 
+  dotenv-expand@1000.0.0: {}
+
   dotenv@18.0.3: {}
+
+  dotenv@18.0.4: {}
 
   drizzle-kit@0.31.11:
     dependencies:

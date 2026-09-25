@@ -15,6 +15,8 @@
   "devDependencies": {
     "@types/node": "^26.6.2",
     "tsx": "^4.23.15",
+    "dotenv": "^18.0.3",
+    "dotenv-expand": "^1000.0.0",
     "typescript": "^7.0.2"
   },
   "packageManager": "pnpm@12.0.0"
