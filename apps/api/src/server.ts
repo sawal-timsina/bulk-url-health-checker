@@ -1,33 +1,31 @@
-import Fastify from "fastify";
-import "dotenv/config";
+import { config } from "dotenv";
+import { buildApp } from "./app";
 import * as process from "node:process";
 import { expand } from "dotenv-expand";
 
 const env = config({
   path: "../../.env",
 });
+
 expand(env);
 
-const app = Fastify({
-  logger: true,
-});
+const app = buildApp();
 
-app.get("/health", async () => {
-  return {
-    status: "ok",
-  };
-});
+const port = Number(process.env.API_PORT ?? 3001);
+const host = process.env.API_HOST ?? "0.0.0.0";
 
-const start = async () => {
+async function start() {
   try {
     await app.listen({
-      port: 3001,
-      host: "0.0.0.0",
+      port,
+      host,
     });
+
+    app.log.info(`API listening on ${host}:${port}`);
   } catch (error) {
     app.log.error(error);
     process.exit(1);
   }
-};
+}
 
 start();
