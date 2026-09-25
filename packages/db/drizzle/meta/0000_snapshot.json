@@ -189,12 +189,8 @@
           "name": "urls_batch_id_batches_id_fk",
           "tableFrom": "urls",
           "tableTo": "batches",
-          "columnsFrom": [
-            "batch_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["batch_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -204,10 +200,7 @@
         "urls_batch_url_unique": {
           "name": "urls_batch_url_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "batch_id",
-            "url"
-          ]
+          "columns": ["batch_id", "url"]
         }
       },
       "policies": {},
@@ -219,23 +212,12 @@
     "public.batch_status": {
       "name": "batch_status",
       "schema": "public",
-      "values": [
-        "pending",
-        "running",
-        "completed",
-        "cancelled"
-      ]
+      "values": ["pending", "running", "completed", "cancelled"]
     },
     "public.url_status": {
       "name": "url_status",
       "schema": "public",
-      "values": [
-        "queued",
-        "processing",
-        "success",
-        "failed",
-        "cancelled"
-      ]
+      "values": ["queued", "processing", "success", "failed", "cancelled"]
     }
   },
   "schemas": {},

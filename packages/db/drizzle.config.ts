@@ -3,15 +3,15 @@ import { expand } from "dotenv-expand";
 import { defineConfig } from "drizzle-kit";
 
 const env = config({
-    path: "../../.env",
+  path: "../../.env",
 });
-expand(env)
+expand(env);
 
 export default defineConfig({
-    schema: "./src/schema/index.ts",
-    out: "./drizzle",
-    dialect: "postgresql",
-    dbCredentials: {
-        url: process.env.DATABASE_URL!,
-    },
+  schema: "./src/schema/index.ts",
+  out: "./drizzle",
+  dialect: "postgresql",
+  dbCredentials: {
+    url: process.env.DATABASE_URL!,
+  },
 });

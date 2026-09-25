@@ -1,9 +1,9 @@
-import {config} from "dotenv";
-import {expand} from "dotenv-expand";
+import { config } from "dotenv";
+import { expand } from "dotenv-expand";
 
 const env = config({
-    path: "../../.env",
+  path: "../../.env",
 });
-expand(env)
+expand(env);
 
-console.log('Hello World!');
+console.log("Hello World!");

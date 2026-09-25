@@ -13,7 +13,14 @@
     "jest": true,
     "node": true
   },
-  "ignorePatterns": ["eslint.config.mjs", "dist/**"],
+  "ignorePatterns": [
+    "eslint.config.mjs",
+    "node_modules",
+    "dist",
+    ".next",
+    "coverage",
+    ".turbo"
+  ],
   "rules": {
     "constructor-super": "error",
     "for-direction": "error",
