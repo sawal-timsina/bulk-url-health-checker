@@ -1,4 +1,5 @@
 import {
+  check,
   index,
   integer,
   pgEnum,
@@ -8,6 +9,7 @@ import {
   unique,
   uuid,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 import { batches } from "./batches";
 
@@ -66,6 +68,19 @@ export const urls = pgTable(
   },
 
   (table) => ({
+    urlsAttemptsCheck: check(
+      "urls_attempts_check",
+      sql`${table.attempts} >= 0`,
+    ),
+    urlsResponseTimeCheck: check(
+      "urls_response_time_check",
+      sql`${table.responseTimeMs} IS NULL OR ${table.responseTimeMs} >= 0`,
+    ),
+    urlsHttpStatusCheck: check(
+      "urls_http_status_check",
+      sql`${table.httpStatus} IS NULL OR ${table.httpStatus} BETWEEN 100 AND 599`,
+    ),
+
     batchIdIdx: index("urls_batch_id_idx").on(table.batchId),
 
     batchStatusIdx: index("urls_batch_status_idx").on(
