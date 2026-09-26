@@ -43,3 +43,16 @@ export async function incrementBatchCompletedCount(id: string) {
 
   return batch ?? null;
 }
+
+export async function cancelBatch(id: string) {
+  const [batch] = await db
+    .update(batches)
+    .set({
+      status: "cancelled",
+      updatedAt: new Date(),
+    })
+    .where(and(eq(batches.id, id), sql`${batches.status} IN ('pending', 'running')`))
+    .returning();
+
+  return batch ?? null;
+}
