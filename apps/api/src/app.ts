@@ -1,6 +1,6 @@
-import Fastify from "fastify";
 import cors from "@fastify/cors";
-
+import Fastify from "fastify";
+import { batchRoutes } from "./routes/batches/index.js";
 import { healthRoutes } from "./routes/health.js";
 
 export function buildApp() {
@@ -13,9 +13,9 @@ export function buildApp() {
   });
 
   app.register(healthRoutes);
-  // app.register(batchRoutes, {
-  //   prefix: "/batches",
-  // });
+  app.register(batchRoutes, {
+    prefix: "/batches",
+  });
 
   return app;
 }
