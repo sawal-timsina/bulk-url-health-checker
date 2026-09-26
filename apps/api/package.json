@@ -13,7 +13,9 @@
   "dependencies": {
     "@bulk-url-checker/db": "workspace:*",
     "@bulk-url-checker/shared": "workspace:*",
+    "@bulk-url-checker/queue": "workspace:*",
     "@fastify/cors": "^11.3.0",
+    "bullmq": "^6.3.9",
     "fastify": "^5.12.5",
     "pg": "^8.23.0"
   },
