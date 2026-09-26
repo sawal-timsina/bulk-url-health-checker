@@ -1,0 +1,17 @@
+POST http://localhost:3001/batches
+Content-Type: application/json
+
+{
+  "urls": [
+    "https://example.com",
+    "https://google.com",
+    "https://github.com"
+  ]
+}
+
+###
+
+GET http://localhost:3001/batches
+Content-Type: application/json
+
+###
