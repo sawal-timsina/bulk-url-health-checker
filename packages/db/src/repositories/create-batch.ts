@@ -34,6 +34,6 @@ export async function createBatchWithUrls(input: CreateBatchInput) {
       );
     }
 
-    return batch;
+    return batch!;
   });
 }
