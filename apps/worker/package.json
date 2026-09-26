@@ -3,16 +3,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/worker.ts",
+    "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/worker.js",
+    "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint"
   },
   "dependencies": {
     "@bulk-url-checker/db": "workspace:*",
     "@bulk-url-checker/shared": "workspace:*",
+    "@bulk-url-checker/queue": "workspace:*",
     "bullmq": "^6.3.9",
+    "drizzle-orm": "^0.45.3",
     "ioredis": "^6.0.0"
   },
   "devDependencies": {
