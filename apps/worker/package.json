@@ -10,14 +10,17 @@
     "lint": "oxlint"
   },
   "dependencies": {
-    "bullmq": "^6.3.8",
+    "@bulk-url-checker/db": "workspace:*",
+    "@bulk-url-checker/shared": "workspace:*",
+    "bullmq": "^6.3.9",
     "ioredis": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
     "dotenv": "^18.0.3",
     "dotenv-expand": "^1000.0.0",
-    "tsx": "^4.23.15"
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   },
   "packageManager": "pnpm@12.0.0"
 }
