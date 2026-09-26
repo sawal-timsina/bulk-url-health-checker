@@ -1,3 +1,3 @@
-export * from "./connection";
-export * from "./queues";
-export * from "./configure";
+export * from "./connection.js";
+export * from "./queues.js";
+export * from "./configure.js";

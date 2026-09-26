@@ -9,10 +9,11 @@ export function isTransientHttpStatus(status: number): boolean {
     504,
   ].includes(status);
 }
+
 export function isTransientNetworkError(error: unknown): boolean {
   if (!(error instanceof Error)) {
     return true;
   }
 
-  return error.name === "TimeoutError" || error.name === "AbortError" || true;
+  return error.name === "TimeoutError" || error.name === "AbortError" || error.name === "TypeError";
 }

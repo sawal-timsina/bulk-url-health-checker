@@ -1,4 +1,4 @@
-import { urlCheckQueue } from "./queues";
+import { urlCheckQueue } from "./queues.js";
 
 export async function configureUrlCheckQueue() {
   await urlCheckQueue.setGlobalConcurrency(5);

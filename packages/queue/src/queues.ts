@@ -1,6 +1,6 @@
 import { Queue } from "bullmq";
 import type { UrlCheckJob } from "@bulk-url-checker/shared";
-import { createRedisConnection } from "./connection";
+import { createRedisConnection } from "./connection.js";
 
 export const URL_CHECK_QUEUE = "url-checks";
 
