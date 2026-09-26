@@ -1,6 +1,7 @@
+import { randomUUID } from "node:crypto";
 import { createBatchWithUrls } from "@bulk-url-checker/db";
 import type { BatchSummary } from "@bulk-url-checker/shared";
-import { randomUUID } from "node:crypto";
+import { enqueueUrlCheck } from "./queue-service.js";
 import { normalizeUrl } from "../utils/url.js";
 
 interface Args {
@@ -8,11 +9,13 @@ interface Args {
 }
 
 export async function createBatch(input: Args): Promise<BatchSummary> {
+  const normalizedUrls = input.urls.map(normalizeUrl);
+
   const batchId = randomUUID();
 
-  const urlRecords = input.urls.map((url) => ({
+  const urlRecords = normalizedUrls.map((url) => ({
     id: randomUUID(),
-    url: normalizeUrl(url),
+    url,
   }));
 
   const batch = await createBatchWithUrls({
@@ -20,12 +23,21 @@ export async function createBatch(input: Args): Promise<BatchSummary> {
     urls: urlRecords,
   });
 
+  await Promise.all(
+    urlRecords.map((url) =>
+      enqueueUrlCheck({
+        batchId,
+        urlId: url.id,
+      }),
+    ),
+  );
+
   return {
-    id: batch!.id,
-    status: batch!.status,
-    totalCount: batch!.totalCount,
-    completedCount: batch!.completedCount,
-    createdAt: batch!.createdAt.toISOString(),
-    updatedAt: batch!.updatedAt.toISOString(),
+    id: batch.id,
+    status: batch.status,
+    totalCount: batch.totalCount,
+    completedCount: batch.completedCount,
+    createdAt: batch.createdAt.toISOString(),
+    updatedAt: batch.updatedAt.toISOString(),
   };
 }
