@@ -82,7 +82,7 @@ export const urlCheckWorker = new Worker<UrlCheckJob>(
        */
       const status = result.httpStatus >= 200 && result.httpStatus < 400 ? "success" : "failed";
 
-      await completeUrlAndUpdateBatch({
+      const completion = await completeUrlAndUpdateBatch({
         urlId,
         status,
         httpStatus: result.httpStatus,
@@ -90,6 +90,15 @@ export const urlCheckWorker = new Worker<UrlCheckJob>(
         title: result.title,
         error: status === "failed" ? `HTTP ${result.httpStatus}` : null,
       });
+
+      if (!completion) {
+        console.log(`URL ${urlId} was no longer processing; ignoring result`);
+
+        return {
+          urlId,
+          skipped: true,
+        };
+      }
 
       console.log(`Completed ${url.url}: ` + `${result.httpStatus} ` + `(${result.responseTimeMs}ms)`);
 
@@ -105,7 +114,7 @@ export const urlCheckWorker = new Worker<UrlCheckJob>(
       const isLastAttempt = currentAttempt >= totalAttempts;
 
       if (error instanceof TransientHttpError && isLastAttempt) {
-        await completeUrlAndUpdateBatch({
+        const completion = await completeUrlAndUpdateBatch({
           urlId,
           status: "failed",
           httpStatus: error.httpStatus,
@@ -113,6 +122,14 @@ export const urlCheckWorker = new Worker<UrlCheckJob>(
           title: error.title,
           error: `HTTP ${error.httpStatus} ` + `after ${currentAttempt} attempts`,
         });
+        if (!completion) {
+          console.log(`URL ${urlId} was no longer processing; ignoring result`);
+
+          return {
+            urlId,
+            skipped: true,
+          };
+        }
 
         return {
           urlId,
@@ -125,11 +142,20 @@ export const urlCheckWorker = new Worker<UrlCheckJob>(
        */
       if (isTransientNetworkError(error)) {
         if (isLastAttempt) {
-          await completeUrlAndUpdateBatch({
+          const completion = await completeUrlAndUpdateBatch({
             urlId,
             status: "failed",
             error: error instanceof Error ? error.message : "Unknown network error",
           });
+
+          if (!completion) {
+            console.log(`URL ${urlId} was no longer processing; ignoring result`);
+
+            return {
+              urlId,
+              skipped: true,
+            };
+          }
 
           return {
             urlId,
