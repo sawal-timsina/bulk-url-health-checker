@@ -1,25 +1,9 @@
-import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
-import {
-  check,
-  index,
-  integer,
-  pgEnum,
-  pgTable,
-  text,
-  timestamp,
-  unique,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { type InferEnum, type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
+import { check, index, integer, pgEnum, pgTable, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
 
 import { batches } from "./batches.js";
 
-export const urlStatusEnum = pgEnum("url_status", [
-  "queued",
-  "processing",
-  "success",
-  "failed",
-  "cancelled",
-]);
+export const urlStatusEnum = pgEnum("url_status", ["queued", "processing", "success", "failed", "cancelled"]);
 
 export const urls = pgTable(
   "urls",
@@ -68,10 +52,7 @@ export const urls = pgTable(
   },
 
   (table) => ({
-    urlsAttemptsCheck: check(
-      "urls_attempts_check",
-      sql`${table.attempts} >= 0`,
-    ),
+    urlsAttemptsCheck: check("urls_attempts_check", sql`${table.attempts} >= 0`),
     urlsResponseTimeCheck: check(
       "urls_response_time_check",
       sql`${table.responseTimeMs} IS NULL OR ${table.responseTimeMs} >= 0`,
@@ -83,17 +64,12 @@ export const urls = pgTable(
 
     batchIdIdx: index("urls_batch_id_idx").on(table.batchId),
 
-    batchStatusIdx: index("urls_batch_status_idx").on(
-      table.batchId,
-      table.status,
-    ),
+    batchStatusIdx: index("urls_batch_status_idx").on(table.batchId, table.status),
 
-    batchUrlUnique: unique("urls_batch_url_unique").on(
-      table.batchId,
-      table.url,
-    ),
+    batchUrlUnique: unique("urls_batch_url_unique").on(table.batchId, table.url),
   }),
 );
 
 export type Url = InferSelectModel<typeof urls>;
 export type NewUrl = InferInsertModel<typeof urls>;
+export type UrlStatus = InferEnum<typeof urlStatusEnum>;
