@@ -4,7 +4,7 @@
   "type": "module",
   "main": "./src/server.ts",
   "scripts": {
-    "dev": "tsx watch ./src/server.ts",
+    "dev": "tsx watch --conditions=development ./src/server.ts",
     "build": "tsc",
     "start": "node ./dist/server.js",
     "typecheck": "tsc --noEmit",
