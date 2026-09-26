@@ -1,13 +1,5 @@
-import { config } from "dotenv";
-import { buildApp } from "./app.js";
 import * as process from "node:process";
-import { expand } from "dotenv-expand";
-
-const env = config({
-  path: "../../.env",
-});
-
-expand(env);
+import { buildApp } from "./app.js";
 
 const app = buildApp();
 
