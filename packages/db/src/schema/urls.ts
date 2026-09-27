@@ -30,6 +30,10 @@ export const urls = pgTable(
 
     attempts: integer("attempts").notNull().default(0),
 
+    // Bumped on every "retry failed"; part of the BullMQ jobId so a re-run
+    // isn't deduplicated against the previous (completed) job.
+    generation: integer("generation").notNull().default(0),
+
     createdAt: timestamp("created_at", {
       withTimezone: true,
     })

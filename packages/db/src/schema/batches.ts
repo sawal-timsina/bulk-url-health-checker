@@ -30,7 +30,7 @@ export const batches = pgTable(
     batchesTotalCountCheck: check("batches_total_count_check", sql`${table.totalCount} >= 0`),
     batchesCompletedCountCheck: check(
       "batches_completed_count_check",
-      sql`${table.completedCount} >= 0 AND ${table.completedCount} <= ${table.completedCount}`,
+      sql`${table.completedCount} >= 0 AND ${table.completedCount} <= ${table.totalCount}`,
     ),
     batchesCreatedAtIdx: index("idx_batches_created_at").on(sql`${table.createdAt} DESC`),
   }),
