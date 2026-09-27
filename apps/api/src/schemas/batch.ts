@@ -13,8 +13,6 @@ export const createBatchSchema = {
         items: {
           type: "string",
           minLength: 1,
-        },
-      },
           maxLength: 2048,
         },
       },
@@ -28,6 +26,12 @@ export const createBatchSchema = {
   },
 } as const;
 
+export const batchParamsSchema = {
+  params: {
+    type: "object",
+    required: ["id"],
+    properties: {
+      id: { type: "string", format: "uuid" },
     },
   },
 } as const;
