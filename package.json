@@ -19,12 +19,12 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "prettier --check .",
-    "format:fix": "prettier --write ."
     "format:fix": "prettier --write .",
     "db:migrate": "pnpm --filter @bulk-url-checker/db db:migrate",
     "verify:limits": "tsx scripts/verify-limits.ts",
     "start:scaled": "API_REPLICAS=2 WORKER_REPLICAS=2 podman compose up --build",
     "stop": "API_REPLICAS=2 WORKER_REPLICAS=2 podman compose down",
+    "test": "tsx --test \"apps/*/src/**/*.test.ts\" \"apps/web/lib/**/*.test.ts\""
   },
   "devDependencies": {
     "@bulk-url-checker/shared": "workspace:*",
