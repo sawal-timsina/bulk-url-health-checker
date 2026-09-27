@@ -49,6 +49,10 @@ export interface GetBatchResponse {
   batch: BatchDetails;
 }
 
+export interface BatchActionRequest {
+  id: string;
+}
+
 export interface BatchActionResponse {
   batch: BatchSummary;
 }

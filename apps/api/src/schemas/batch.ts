@@ -35,3 +35,14 @@ export const batchParamsSchema = {
     },
   },
 } as const;
+
+export const batchActionSchema = {
+  body: {
+    type: "object",
+    additionalProperties: false,
+    required: ["id"],
+    properties: {
+      id: { type: "string", format: "uuid" },
+    },
+  },
+} as const;
