@@ -9,6 +9,11 @@
       "types": "./src/index.ts",
       "development": "./src/index.ts",
       "default": "./dist/index.js"
+    },
+    "./migrate": {
+      "types": "./src/migrate.ts",
+      "development": "./src/migrate.ts",
+      "default": "./dist/migrate.js"
     }
   },
   "type": "module",
@@ -18,10 +23,10 @@
     "db:migrate": "drizzle-kit migrate",
     "db:check": "drizzle-kit check",
     "typecheck": "tsc --noEmit",
-    "db:test": "tsx src/test-db.ts",
     "lint": "oxlint"
   },
   "dependencies": {
+    "@bulk-url-checker/shared": "workspace:*",
     "drizzle-orm": "^0.45.3",
     "pg": "^8.23.0"
   },
