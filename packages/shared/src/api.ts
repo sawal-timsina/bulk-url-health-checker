@@ -1,4 +1,5 @@
-import type { BatchStatus, UrlCheckStatus } from "./index.js";
+import type { BatchStatus } from "./batch.ts";
+import type { UrlCheckStatus } from "./url-check.ts";
 
 export interface BatchSummary {
   id: string;
@@ -25,6 +26,7 @@ export interface UrlCheckResult {
   createdAt: string;
   startedAt: string | null;
   completedAt: string | null;
+  updatedAt: string;
 }
 
 export interface BatchDetails extends BatchSummary {
@@ -39,7 +41,24 @@ export interface CreateBatchResponse {
   batch: BatchSummary;
 }
 
+export interface ListBatchesResponse {
+  batches: BatchSummary[];
+}
+
+export interface GetBatchResponse {
+  batch: BatchDetails;
+}
+
+export interface BatchActionResponse {
+  batch: BatchSummary;
+}
+
+export interface RetryFailedResponse extends BatchActionResponse {
+  retriedCount: number;
+}
+
 export interface ApiError {
   error: string;
   message: string;
+  details?: unknown;
 }
