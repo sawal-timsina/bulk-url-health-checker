@@ -1,24 +1,11 @@
-import { eq } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 
-import { db } from "../client.js";
-import { type NewUrl, urls } from "../schema/urls.js";
-
-export async function createUrls(data: NewUrl[]) {
-  if (data.length === 0) {
-    return [];
-  }
-
-  return db.insert(urls).values(data).returning();
-}
+import { getDb } from "../client.js";
+import { batches } from "../schema/batches.js";
+import { urls } from "../schema/urls.js";
 
 export async function findUrlsByBatchId(batchId: string) {
-  return db.select().from(urls).where(eq(urls.batchId, batchId));
-}
-
-export async function findUrlById(id: string) {
-  const [url] = await db.select().from(urls).where(eq(urls.id, id)).limit(1);
-
-  return url ?? null;
+  return getDb().select().from(urls).where(eq(urls.batchId, batchId)).orderBy(asc(urls.createdAt), asc(urls.url));
 }
 
 export async function markUrlProcessing(id: string) {

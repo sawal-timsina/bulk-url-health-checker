@@ -1,10 +1,10 @@
-import { and, eq, sql } from "drizzle-orm";
-import { db } from "../client";
+import { and, eq, inArray } from "drizzle-orm";
+import { getDb } from "../client.js";
 import { batches } from "../schema/batches.js";
 import { urls } from "../schema/urls.js";
 
 export async function cancelBatchAndUrls(batchId: string) {
-  return db.transaction(async (tx) => {
+  return getDb().transaction(async (tx) => {
     const [batch] = await tx
       .update(batches)
       .set({

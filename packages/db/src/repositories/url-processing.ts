@@ -1,6 +1,6 @@
-import { and, eq, sql } from "drizzle-orm";
-import { db } from "../client.js";
-import { urls, UrlStatus } from "../schema/urls.js";
+import { and, eq, inArray, sql } from "drizzle-orm";
+import { getDb } from "../client.js";
+import { urls } from "../schema/urls.js";
 
 export async function claimUrlForProcessing(id: string) {
   const [url] = await db

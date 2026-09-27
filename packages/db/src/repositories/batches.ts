@@ -1,28 +1,26 @@
-import { and, desc, eq, sql } from "drizzle-orm";
-import { db } from "../client.js";
-import { batches, type BatchStatus, type NewBatch } from "../schema/batches.js";
-
-export async function createBatch(data: NewBatch) {
-  const [batch] = await db.insert(batches).values(data).returning();
-
-  return batch;
-}
+import { and, desc, eq } from "drizzle-orm";
+import { getDb } from "../client.js";
+import { batches } from "../schema/batches.js";
 
 export async function findBatchById(id: string) {
-  const [batch] = await db.select().from(batches).where(eq(batches.id, id)).limit(1);
+  const [batch] = await getDb().select().from(batches).where(eq(batches.id, id)).limit(1);
 
   return batch ?? null;
 }
 
 export async function listBatches() {
-  return db.select().from(batches).orderBy(desc(batches.createdAt));
+  return getDb().select().from(batches).orderBy(desc(batches.createdAt));
 }
 
+/**
+ * pending → running. Returns null when the batch was already past pending,
+ * so callers can tell whether the status actually changed.
+ */
 export async function markBatchRunning(id: string) {
-  const [batch] = await db
+  const [batch] = await getDb()
     .update(batches)
     .set({
-      status: "running" as BatchStatus,
+      status: "running",
       updatedAt: new Date(),
     })
     .where(and(eq(batches.id, id), eq(batches.status, "pending")))

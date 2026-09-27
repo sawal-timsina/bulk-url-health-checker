@@ -1,5 +1,5 @@
 import { and, eq, sql } from "drizzle-orm";
-import { db } from "../client.js";
+import { getDb } from "../client.js";
 import { batches } from "../schema/batches.js";
 import { urls } from "../schema/urls.js";
 
@@ -13,7 +13,7 @@ interface CompleteUrlInput {
 }
 
 export async function completeUrlAndUpdateBatch(input: CompleteUrlInput) {
-  return db.transaction(async (tx) => {
+  return getDb().transaction(async (tx) => {
     const [updatedUrl] = await tx
       .update(urls)
       .set({
