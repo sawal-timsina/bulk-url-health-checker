@@ -28,29 +28,3 @@ export async function markBatchRunning(id: string) {
 
   return batch ?? null;
 }
-
-export async function incrementBatchCompletedCount(id: string) {
-  const [batch] = await db
-    .update(batches)
-    .set({
-      completedCount: sql`${batches.completedCount} + 1`,
-      updatedAt: new Date(),
-    })
-    .where(eq(batches.id, id))
-    .returning();
-
-  return batch ?? null;
-}
-
-export async function cancelBatch(id: string) {
-  const [batch] = await db
-    .update(batches)
-    .set({
-      status: "cancelled",
-      updatedAt: new Date(),
-    })
-    .where(and(eq(batches.id, id), sql`${batches.status} IN ('pending', 'running')`))
-    .returning();
-
-  return batch ?? null;
-}
