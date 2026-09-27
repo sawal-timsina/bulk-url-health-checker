@@ -1,0 +1,33 @@
+# Load balancer in front of every API replica (API_REPLICAS=N).
+# Compose DNS returns one A record per replica; nginx round-robins across them
+# and re-resolves every 5s, so replicas added or removed later are picked up.
+# ${NGINX_LOCAL_RESOLVERS} is filled from /etc/resolv.conf by the nginx image
+# (127.0.0.11 on Docker, the network gateway on Podman). ${API_PORT} comes
+# from compose; the image only substitutes variables that are set, so nginx's
+# own $host etc. are left alone.
+resolver ${NGINX_LOCAL_RESOLVERS} valid=5s ipv6=off;
+
+upstream api {
+  zone api 64k;
+  server api:${API_PORT} resolve;
+}
+
+server {
+  listen ${API_PORT};
+
+  location / {
+    proxy_pass http://api;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    # Server-Sent Events: stream immediately and keep long-lived connections open.
+    proxy_buffering off;
+    proxy_cache off;
+    proxy_read_timeout 1h;
+
+    # Tells you which replica served a request (handy for the demo).
+    add_header X-Upstream $upstream_addr always;
+  }
+}
