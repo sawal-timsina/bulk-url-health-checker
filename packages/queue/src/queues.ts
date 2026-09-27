@@ -27,3 +27,40 @@ export function getUrlCheckQueue(): Queue<UrlCheckJob> {
 
   return urlCheckQueue;
 }
+
+/**
+ * Enqueues one job per URL. The jobId is deterministic, so enqueueing the
+ * same URL generation twice (a client retry, the startup reconciler) is a no-op.
+ */
+export async function enqueueUrlChecks(jobs: UrlCheckJob[]) {
+  if (jobs.length === 0) {
+    return;
+  }
+
+  await getUrlCheckQueue().addBulk(
+    jobs.map((job) => ({
+      name: "check-url",
+      data: job,
+      opts: { jobId: urlCheckJobId(job.urlId, job.generation) },
+    })),
+  );
+}
+
+/**
+ * Best-effort removal of jobs that haven't started, so cancelled URLs don't
+ * use rate-limit slots. Jobs that are active (locked) can't be removed; the
+ * worker discards their results because the URL is no longer "processing".
+ */
+export async function removeUrlCheckJobs(jobs: Array<{ urlId: string; generation: number }>) {
+  const queue = getUrlCheckQueue();
+
+  await Promise.all(
+    jobs.map(async ({ urlId, generation }) => {
+      try {
+        await queue.remove(urlCheckJobId(urlId, generation));
+      } catch {
+        // Active job: its lock prevents removal.
+      }
+    }),
+  );
+}
