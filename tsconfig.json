@@ -11,6 +11,7 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
+    "rewriteRelativeImportExtensions": true,
     "skipLibCheck": true
   },
   "exclude": ["**/.*/", "**/build", "**/node_modules"]
