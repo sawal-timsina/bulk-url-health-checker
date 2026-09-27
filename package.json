@@ -3,11 +3,12 @@
   "private": true,
   "//": "#target-branch-reference: scripts.prettier",
   "scripts": {
+    "start": "podman compose up --build",
     "dev": "concurrently \"pnpm --filter @bulk-url-checker/api dev\" \"pnpm --filter @bulk-url-checker/worker dev\" \"pnpm --filter @bulk-url-checker/web dev\"",
     "dev:api": "pnpm --filter @bulk-url-checker/api dev",
     "dev:worker": "pnpm --filter @bulk-url-checker/worker dev",
     "dev:web": "pnpm --filter @bulk-url-checker/web dev",
-    "infra:up": "podman compose up -d",
+    "infra:up": "podman compose up -d postgres redis",
     "infra:down": "podman compose down",
     "infra:logs": "podman compose logs -f",
     "build": "pnpm -r build",
@@ -19,13 +20,20 @@
     "lint:fix": "oxlint --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write ."
+    "format:fix": "prettier --write .",
+    "db:migrate": "pnpm --filter @bulk-url-checker/db db:migrate",
+    "verify:limits": "tsx scripts/verify-limits.ts",
+    "start:scaled": "API_REPLICAS=2 WORKER_REPLICAS=2 podman compose up --build",
+    "stop": "API_REPLICAS=2 WORKER_REPLICAS=2 podman compose down",
   },
   "devDependencies": {
+    "@bulk-url-checker/shared": "workspace:*",
     "@types/node": "^26.6.2",
     "concurrently": "^9.0.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2003",
     "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
 }
