@@ -1,21 +1,26 @@
+import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { config } from "dotenv";
-import { expand } from "dotenv-expand";
 
-const env = config({
-  path: "../../.env",
-});
-expand(env);
+let pool: Pool | undefined;
+let database: NodePgDatabase | undefined;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is not set");
+/**
+ * Called once by each app at startup with its validated config; the package
+ * never reads process.env itself.
+ */
+export function initDb(databaseUrl: string) {
+  pool = new Pool({ connectionString: databaseUrl });
+  database = drizzle({ client: pool });
 }
 
-export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+export function getDb(): NodePgDatabase {
+  if (!database) {
+    throw new Error("Database not initialised: call initDb() at startup");
+  }
 
-export const db = drizzle({
-  client: pool,
-});
+  return database;
+}
+
+export async function closeDb() {
+  await pool?.end();
+}
