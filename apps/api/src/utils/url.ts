@@ -1,15 +1,26 @@
-export function normalizeUrl(input: string): string {
+export type NormalizeResult = { ok: true; url: string } | { ok: false; input: string; reason: string };
+
+export function normalizeUrl(input: string): NormalizeResult {
   const value = input.trim();
 
   if (!value) {
-    throw new Error("URL cannot be empty");
+    return { ok: false, input, reason: "URL cannot be empty" };
   }
 
-  const parsed = new URL(value);
+  let parsed: URL;
+
+  try {
+    parsed = new URL(value);
+  } catch {
+    return { ok: false, input, reason: "Not a valid absolute URL" };
+  }
 
   if (!["http:", "https:"].includes(parsed.protocol)) {
-    throw new Error(`Unsupported URL protocol: ${parsed.protocol}`);
+    return { ok: false, input, reason: `Unsupported protocol: ${parsed.protocol}` };
   }
 
-  return parsed.toString();
+  // Fragments never reach the server, so they'd only create false duplicates.
+  parsed.hash = "";
+
+  return { ok: true, url: parsed.toString() };
 }
