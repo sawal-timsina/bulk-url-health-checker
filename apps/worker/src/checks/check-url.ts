@@ -32,6 +32,11 @@ export async function checkUrl(url: string): Promise<UrlCheckOutput> {
     }
   }
 
+  // Release the socket when the body wasn't read.
+  if (!response.bodyUsed) {
+    await response.body?.cancel();
+  }
+
   const responseTimeMs = Math.round(performance.now() - startedAt);
 
   return {
@@ -41,7 +46,7 @@ export async function checkUrl(url: string): Promise<UrlCheckOutput> {
   };
 }
 
-function extractTitle(html: string): string | null {
+export function extractTitle(html: string): string | null {
   const match = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
 
   if (!match) {
