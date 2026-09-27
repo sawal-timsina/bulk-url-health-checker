@@ -1,20 +1,13 @@
-import type { FastifyPluginAsync } from "fastify";
+import type { FastifyPluginCallback } from "fastify";
+import type { ListBatchesResponse } from "@bulk-url-checker/shared";
+import { getBatchList } from "../../services/batch-list-cache.js";
 
-import { listBatches } from "@bulk-url-checker/db";
+export const listBatchRoute: FastifyPluginCallback = (app, _options, done) => {
+  app.get<{ Reply: ListBatchesResponse }>("/", async (_request, reply) => {
+    const { batches, cacheHit } = await getBatchList();
 
-export const listBatchRoute: FastifyPluginAsync = async (app) => {
-  app.get("/", async () => {
-    const batches = await listBatches();
-
-    return {
-      batches: batches.map((batch) => ({
-        id: batch.id,
-        status: batch.status,
-        totalCount: batch.totalCount,
-        completedCount: batch.completedCount,
-        createdAt: batch.createdAt.toISOString(),
-        updatedAt: batch.updatedAt.toISOString(),
-      })),
-    };
+    return reply.header("x-cache", cacheHit ? "HIT" : "MISS").send({ batches });
   });
+
+  done();
 };
