@@ -5,6 +5,7 @@ import { urls } from "../schema/urls.js";
 
 interface CompleteUrlInput {
   urlId: string;
+  generation: number;
   status: "success" | "failed";
   httpStatus?: number | null;
   responseTimeMs?: number | null;
@@ -12,6 +13,13 @@ interface CompleteUrlInput {
   error?: string | null;
 }
 
+/**
+ * processing → success|failed, and bumps the batch's completed count in the
+ * same transaction. Marks the batch completed when it was the last URL.
+ *
+ * Returns null when the URL is no longer processing (cancelled, completed by
+ * another attempt, or reset by "retry failed"), so the result is discarded.
+ */
 export async function completeUrlAndUpdateBatch(input: CompleteUrlInput) {
   return getDb().transaction(async (tx) => {
     const [updatedUrl] = await tx
@@ -25,10 +33,9 @@ export async function completeUrlAndUpdateBatch(input: CompleteUrlInput) {
         completedAt: new Date(),
         updatedAt: new Date(),
       })
-      .where(and(eq(urls.id, input.urlId), eq(urls.status, "processing")))
+      .where(and(eq(urls.id, input.urlId), eq(urls.generation, input.generation), eq(urls.status, "processing")))
       .returning();
 
-    // Another worker/recovery process already completed this URL.
     if (!updatedUrl) {
       return null;
     }
@@ -37,6 +44,11 @@ export async function completeUrlAndUpdateBatch(input: CompleteUrlInput) {
       .update(batches)
       .set({
         completedCount: sql`${batches.completedCount} + 1`,
+        status: sql`CASE
+          WHEN ${batches.completedCount} + 1 >= ${batches.totalCount} AND ${batches.status} = 'running'
+          THEN 'completed'::batch_status
+          ELSE ${batches.status}
+        END`,
         updatedAt: new Date(),
       })
       .where(eq(batches.id, updatedUrl.batchId))
@@ -46,27 +58,10 @@ export async function completeUrlAndUpdateBatch(input: CompleteUrlInput) {
       throw new Error(`Batch ${updatedUrl.batchId} not found`);
     }
 
-    const nextCompletedCount = updatedBatch.completedCount;
-
-    if (nextCompletedCount >= updatedBatch.totalCount) {
-      const [completedBatch] = await tx
-        .update(batches)
-        .set({
-          status: "completed",
-          updatedAt: new Date(),
-        })
-        .where(and(eq(batches.id, updatedBatch.id), eq(batches.status, "running")))
-        .returning();
-
-      return {
-        url: updatedUrl,
-        batch: completedBatch ?? updatedBatch,
-      };
-    }
-
     return {
       url: updatedUrl,
       batch: updatedBatch,
+      batchCompleted: updatedBatch.status === "completed" && updatedBatch.completedCount === updatedBatch.totalCount,
     };
   });
 }
