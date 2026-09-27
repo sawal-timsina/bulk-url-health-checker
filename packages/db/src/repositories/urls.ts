@@ -8,16 +8,18 @@ export async function findUrlsByBatchId(batchId: string) {
   return getDb().select().from(urls).where(eq(urls.batchId, batchId)).orderBy(asc(urls.createdAt), asc(urls.url));
 }
 
-export async function markUrlProcessing(id: string) {
-  const [url] = await db
-    .update(urls)
-    .set({
-      status: "processing",
-      startedAt: new Date(),
-      updatedAt: new Date(),
+/**
+ * URLs that should have a live job: not finished, in a batch that is still active.
+ * Used by the worker on startup to re-enqueue anything whose enqueue was lost.
+ */
+export async function findUnfinishedUrls() {
+  return getDb()
+    .select({
+      id: urls.id,
+      batchId: urls.batchId,
+      generation: urls.generation,
     })
-    .where(eq(urls.id, id))
-    .returning();
-
-  return url ?? null;
+    .from(urls)
+    .innerJoin(batches, eq(batches.id, urls.batchId))
+    .where(and(inArray(urls.status, ["queued", "processing"]), inArray(batches.status, ["pending", "running"])));
 }
