@@ -87,7 +87,6 @@
     "valid-typeof": "error",
     "no-array-constructor": "error",
     "no-unused-expressions": "error",
-    "prettier/prettier": "error",
     "typescript/await-thenable": "error",
     "typescript/ban-ts-comment": "error",
     "typescript/no-array-delete": "error",

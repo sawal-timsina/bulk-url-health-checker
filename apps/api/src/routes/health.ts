@@ -1,9 +1,7 @@
-import type { FastifyPluginAsync } from "fastify";
+import type { FastifyPluginCallback } from "fastify";
 
-export const healthRoutes: FastifyPluginAsync = async (app) => {
-  app.get("/health", async () => {
-    return {
-      status: "ok",
-    };
-  });
+export const healthRoutes: FastifyPluginCallback = (app, _options, done) => {
+  app.get("/health", () => ({ status: "ok" }));
+
+  done();
 };
