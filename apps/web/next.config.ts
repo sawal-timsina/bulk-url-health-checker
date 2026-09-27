@@ -1,11 +1,16 @@
 import type { NextConfig } from "next";
-import { loadEnvConfig } from "@next/env";
+import { existsSync } from "node:fs";
 import * as path from "node:path";
 
-loadEnvConfig(path.resolve(__dirname, "../.."));
+const repoRoot = path.resolve(process.cwd(), "../..");
+
+const rootEnvFile = path.join(repoRoot, ".env");
+
+if (existsSync(rootEnvFile)) {
+  process.loadEnvFile(rootEnvFile);
+}
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
   transpilePackages: ["@bulk-url-checker/shared"],
 };
